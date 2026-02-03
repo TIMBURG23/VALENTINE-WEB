@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Beautiful Lilypad 🌼❤️</title>
+    <title>For My Lilypad🌼❤️</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #ffe6e6;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             overflow: hidden;
             transition: background-color 0.5s ease;
@@ -20,211 +26,449 @@
         .container {
             text-align: center;
             position: relative;
-            z-index: 100; /* Keep main card above the floating buttons */
-            background: rgba(255, 255, 255, 0.9);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            max-width: 90%;
-            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
         }
 
         h1 {
             color: #d32f2f;
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 20px;
+            line-height: 1.3;
         }
 
-        img {
-            width: 250px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        .gif-container {
+            margin: 20px auto;
+            width: 280px;
+            height: 280px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
-        .btn-container {
+        .gif-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gif-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .buttons {
+            position: relative;
+            margin-top: 30px;
+            min-height: 150px;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-            position: relative;
-            min-height: 60px;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .btn {
-            padding: 15px 40px;
-            font-size: 1.2rem;
+            padding: 18px 40px;
+            font-size: 1.4rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
+            transition: all 0.3s ease;
             font-weight: bold;
-            transition: all 0.2s;
+            min-width: 160px;
+            z-index: 10;
         }
 
         #yesBtn {
-            background-color: #ff4081;
+            background: linear-gradient(45deg, #4CAF50, #2E7D32);
             color: white;
-            z-index: 20;
-            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+            position: relative;
+        }
+
+        #yesBtn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
         }
 
         #noBtn {
-            background-color: #e0e0e0;
-            color: #333;
-            position: absolute; 
+            background: linear-gradient(45deg, #f44336, #c62828);
+            color: white;
+            box-shadow: 0 6px 20px rgba(244, 67, 54, 0.3);
+            position: relative;
         }
 
-        /* The floating YES buttons */
+        #noBtn:hover {
+            background: linear-gradient(45deg, #e53935, #b71c1c);
+        }
+
+        /* Success Message */
+        #successMessage {
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffeb3b;
+            animation: confetti-fall 5s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .hearts-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.7;
+            animation: float 4s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* Extra Yes buttons */
         .extra-yes {
             position: absolute;
-            background-color: #ff4081;
+            background: linear-gradient(45deg, #4CAF50, #2E7D32);
             color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
             border: none;
-            font-weight: bold;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1rem;
             cursor: pointer;
-            z-index: 50;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            z-index: 5;
             animation: popIn 0.3s ease-out;
         }
 
         @keyframes popIn {
-            0% { transform: scale(0); }
-            80% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Screen Shake Animation */
-        .shake {
-            animation: shake 0.5s infinite;
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .gif-container {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .btn {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+                min-width: 140px;
+            }
         }
-
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-        }
-
-        /* Glitch Text Effect */
-        .glitch {
-            color: red;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: 800;
-        }
-
-        #success { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="container" id="question">
-        <img id="mainImage" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmZlZmJmOWEzN2M5NTQ5ODFkODQ5NjQ2MDQ1NjM1Y2U1Y2E5ODFkOCZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/3oz8xsaLjLVqVxr3Tv/giphy.gif">
-        <h1 id="mainTitle">Will you be my Valentine, Lilypad? 🌹</h1>
-        
-        <div class="btn-container">
-            <button class="btn" id="yesBtn" onclick="acceptLove()">YES!</button>
-            <button class="btn" id="noBtn" onmouseover="runAway()" ontouchstart="runAway()" onclick="runAway()">No</button>
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <div class="container">
+        <div id="questionScreen">
+            <div class="gif-container">
+                <img id="mainImage" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDk0YXRieTBtdGE2dndrbzdybWZpYjE1b2pxajVubXo3aGU4ODN4MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AXhbp00D9dxF9BCqpn/giphy.gif" alt="Cute begging gif">
+            </div>
+            <h1>Will you be my Valentine? 🌹</h1>
+            
+            <div class="buttons">
+                <button class="btn" id="yesBtn" onclick="sheSaidYes()">Yes</button>
+                <button class="btn" id="noBtn" onmouseover="moveNoButton()" ontouchstart="moveNoButton()">No</button>
+            </div>
+        </div>
+
+        <div id="successMessage">
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2ZjaXYyM3hlNzFodG5qMGh3ZTNoajBwcjk2dXYyeGltejRjNWg3OSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qKQQUKSSbWBkO2V3KX/giphy.gif" alt="Celebration">
+            </div>
+            <h1>YAYYY!!!!!!!!!!!!!!!!!!!!  I OWE U MANY MANY MANY SWEETS AND BAKED GOODS. ❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</h1>
+            <p style="font-size: 1.3rem; color: #d32f2f; margin-top: 10px;">I knew you'd make the right choice 😉</p>
         </div>
     </div>
 
-    <div class="container" id="success">
-        <img src="https://media.giphy.com/media/T86i6yDyOYz7J6v9uh/giphy.gif">
-        <h1>I KNEW IT! 🥰</h1>
-        <p>No refunds now. See you on the 14th!</p>
-    </div>
-
     <script>
+        let noClickCount = 0;
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
-        const title = document.getElementById('mainTitle');
-        const container = document.getElementById('question');
-        const body = document.body;
         const mainImage = document.getElementById('mainImage');
-
-        let attempts = 0;
+        const heartsContainer = document.getElementById('heartsContainer');
+        const questionScreen = document.getElementById('questionScreen');
+        const successMessage = document.getElementById('successMessage');
         
-        // Fixed syntax errors here
-        const phrases = [
-            "Are you serious?", "Don't do this!", "Think about the food!", 
-            "I'll tell your mum!", "God is watching!", "Have mercy!", 
-            "Don't be wicked!", "Last warning!", "I am crying now 😭",
-            "I will buy you many sweet!", "Just say YES!!!!", "😭😭😭😭😭😭😭😭"
-        ];
-
-        function runAway() {
-            attempts++;
-            
-            // 1. Move the No button
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
-            
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = `${x}px`;
-            noBtn.style.top = `${y}px`;
-
-            // 2. Change text
-            const phraseIndex = Math.min(attempts, phrases.length - 1);
-            noBtn.innerText = phrases[phraseIndex];
-
-            // 3. Grow the main Yes button
-            let currentScale = 1 + (attempts * 0.2);
-            yesBtn.style.transform = `scale(${currentScale})`;
-
-            // 4. NEW: Spawn extra "YES" buttons everywhere
-            spawnFloatingYes();
-
-            // 5. Visual Chaos Levels
-            if (attempts === 3) {
-                mainImage.src = "https://media.giphy.com/media/26ufcVAp3AiJJsrIs/giphy.gif"; 
-            } else if (attempts === 7) {
-                mainImage.src = "https://media.giphy.com/media/13699jZW4PZdx6/giphy.gif";
-                body.style.backgroundColor = "#4a0000";
-                title.classList.add('glitch');
-                title.innerText = "CLICK YES OR I FAINT!!";
-                title.style.color = "white";
-            } else if (attempts > 9) {
-                // Shake the whole screen
-                container.classList.add('shake');
+        // Create floating hearts
+        function createHearts() {
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heartsContainer.appendChild(heart);
             }
         }
 
-        function spawnFloatingYes() {
-            const btn = document.createElement('button');
-            btn.classList.add('extra-yes');
-            btn.innerText = "YES 💘";
+        // Funny messages that appear when she clicks No
+        const phrases = [
+            "No", 
+            "Are you sure?", 
+            "Really sure?", 
+            "Think again!", 
+            "Last chance!", 
+            "Surely not?", 
+            "You might regret this!", 
+            "Give it another thought!", 
+            "Are you absolutely certain?", 
+            "This could be a mistake!", 
+            "Have a heart!", 
+            "Don't be so cold!", 
+            "Change of heart?", 
+            "Wouldn't you reconsider?", 
+            "Is that your final answer?", 
+            "You're breaking my heart ;(", 
+            "I am going to cry...",
+            "Shedding tears rn",
+            "Please? 🥺",
+            "Okay now you're just being mean",
+            "FINE! I give up...",
+            "Wait, one more chance?",
+            "Pretty please with sugar?",
+            "I'll buy you chocolate!",
+            "OK I'm begging now"
+        ];
+
+        // Sad GIFs progression
+        const sadGifs = [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXIwcGVlbGd5cHliOW9sczc0ZTg0am1iNGF5OXBtN2UydzR5bnByciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/P53TSsopKicrm/giphy.gif", // Initial
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXIwcGVlbGd5cHliOW9sczc0ZTg0am1iNGF5OXBtN2UydzR5bnByciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/JoDP7uqssbcUu5kAF4/giphy.gif", // A bit sad
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXIwcGVlbGd5cHliOW9sczc0ZTg0am1iNGF5OXBtN2UydzR5bnByciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/4V3RuU0zSq1SC8Hh4x/giphy.gif", // Sad
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXIwcGVlbGd5cHliOW9sczc0ZTg0am1iNGF5OXBtN2UydzR5bnByciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/13AXYJh2jDt2IE/giphy.gif", // Crying
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXIwcGVlbGd5cHliOW9sczc0ZTg0am1iNGF5OXBtN2UydzR5bnByciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/jnQYWZ0T4mkhCmkzcn/giphy.gif" // Very sad
+        ];
+
+        function moveNoButton() {
+            noClickCount++;
             
-            // Random position
-            btn.style.left = Math.random() * 90 + "vw";
-            btn.style.top = Math.random() * 90 + "vh";
+            // Update button text
+            const phraseIndex = Math.min(noClickCount - 1, phrases.length - 1);
+            noBtn.textContent = phrases[phraseIndex];
             
-            // Random size
-            const scale = 0.5 + Math.random();
-            btn.style.transform = `scale(${scale})`;
+            // Make YES button grow
+            const scale = 1 + (noClickCount * 0.1);
+            yesBtn.style.transform = `scale(${scale})`;
+            yesBtn.style.fontSize = `${1.4 + (noClickCount * 0.05)}rem`;
+            yesBtn.style.padding = `${18 + (noClickCount * 2)}px ${40 + (noClickCount * 4)}px`;
             
-            // If she clicks ANY of them, it counts as a Yes
-            btn.onclick = acceptLove;
+            // Change GIF based on attempts
+            const gifIndex = Math.min(Math.floor(noClickCount / 5), sadGifs.length - 1);
+            mainImage.src = sadGifs[gifIndex];
             
-            body.appendChild(btn);
+            // Smart button movement that stays on screen
+            moveButtonToRandomPosition();
+            
+            // Spawn extra YES buttons after many attempts
+            if (noClickCount >= 8) {
+                spawnExtraYesButton();
+            }
+            
+            // Change background color progressively
+            const pinkShades = ['#ffe6e6', '#ffd6d6', '#ffc6c6', '#ffb6b6', '#ffa6a6'];
+            const bgIndex = Math.min(Math.floor(noClickCount / 3), pinkShades.length - 1);
+            document.body.style.backgroundColor = pinkShades[bgIndex];
+            
+            // If too many attempts, force YES
+            if (noClickCount >= 15) {
+                forceYes();
+            }
+            
+            // Add shake effect occasionally
+            if (noClickCount % 4 === 0) {
+                shakeScreen();
+            }
         }
 
-        function acceptLove() {
-            document.getElementById('question').style.display = 'none';
-            // Remove all floating buttons
-            document.querySelectorAll('.extra-yes').forEach(el => el.remove());
+        function moveButtonToRandomPosition() {
+            const buttonArea = document.querySelector('.buttons');
+            const buttonRect = buttonArea.getBoundingClientRect();
+            const noBtnRect = noBtn.getBoundingClientRect();
             
-            document.getElementById('success').style.display = 'block';
-            body.style.backgroundColor = "#ffc1e3";
-            // Remove chaotic styles
-            container.classList.remove('shake');
+            // Calculate safe boundaries (keep button fully visible)
+            const maxX = buttonRect.width - noBtnRect.width - 20;
+            const maxY = buttonRect.height - noBtnRect.height - 20;
+            
+            // Ensure we don't get negative values
+            const safeX = Math.max(10, maxX);
+            const safeY = Math.max(10, maxY);
+            
+            // Generate random position within safe bounds
+            const randomX = Math.floor(Math.random() * safeX);
+            const randomY = Math.floor(Math.random() * safeY);
+            
+            // Apply position
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
         }
+
+        function spawnExtraYesButton() {
+            const extraBtn = document.createElement('button');
+            extraBtn.className = 'extra-yes';
+            extraBtn.textContent = 'YES! ❤️';
+            
+            // Random position on screen
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 60);
+            
+            extraBtn.style.left = `${x}px`;
+            extraBtn.style.top = `${y}px`;
+            
+            // Random rotation
+            const rotation = (Math.random() - 0.5) * 30;
+            extraBtn.style.transform = `rotate(${rotation}deg)`;
+            
+            // Click handler
+            extraBtn.onclick = sheSaidYes;
+            
+            document.body.appendChild(extraBtn);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                if (extraBtn.parentNode) {
+                    extraBtn.remove();
+                }
+            }, 5000);
+        }
+
+        function forceYes() {
+            // Create many YES buttons
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => spawnExtraYesButton(), i * 200);
+            }
+            
+            // Update title
+            document.querySelector('h1').innerHTML = "OKAY MY LILYPAD! I'm choosing for you!<br>YOU SAID YES! 🎉";
+            
+            // Auto-accept after delay
+            setTimeout(sheSaidYes, 2000);
+        }
+
+        function shakeScreen() {
+            const container = document.querySelector('.container');
+            container.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                container.style.animation = '';
+            }, 500);
+        }
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% {transform: translateX(0);}
+                10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+                20%, 40%, 60%, 80% {transform: translateX(5px);}
+            }
+        `;
+        document.head.appendChild(style);
+
+        function sheSaidYes() {
+            // Hide question, show success
+            questionScreen.style.display = 'none';
+            successMessage.style.display = 'block';
+            
+            // Create confetti
+            createConfetti();
+            
+            // Change background
+            document.body.style.backgroundColor = '#ffc1e3';
+            
+            // Clear any extra buttons
+            document.querySelectorAll('.extra-yes').forEach(btn => btn.remove());
+        }
+
+        function createConfetti() {
+            const colors = ['#ff4757', '#ff6b81', '#ff9ff3', '#f368e0', '#ff9f43'];
+            
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.width = Math.random() * 8 + 6 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(confetti);
+                
+                // Clean up
+                setTimeout(() => {
+                    if (confetti.parentNode) {
+                        confetti.remove();
+                    }
+                }, 7000);
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', function() {
+            createHearts();
+            
+            // Add click event for No button as well
+            noBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                moveNoButton();
+            });
+            
+            // Prevent right-click on No button
+            noBtn.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                moveNoButton();
+                return false;
+            });
+        });
+
+        // Page title effects
+        window.addEventListener('blur', () => {
+            document.title = "Hey! Come back! ❤️";
+        });
+        
+        window.addEventListener('focus', () => {
+            document.title = "For My LILYPAD ❤️";
+        });
     </script>
 </body>
 </html>
