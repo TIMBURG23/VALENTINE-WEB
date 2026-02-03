@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Lilypad 🌼❤️</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffe6e6; /* Cute pink background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Stops scrolling when button gets huge */
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .gif-container img {
+            width: 200px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        #yesBtn {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #noBtn {
+            background-color: #f44336; /* Red */
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: absolute; /* Allows it to move if we want */
+        }
+
+        /* Success Message hidden by default */
+        #successMessage {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="questionScreen">
+            <div class="gif-container">
+                <img id="mainImage" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2tubHB1MHRmcjc4MWczZ3VjYzV5dDd6ZHd0cTZwZGVjY3RsM2J1YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OgY9PFIPQXHyRQ8LIJ/giphy.gif" alt="Cute begging gif">
+            </div>
+            <h1>Will you be my Valentine? 🌹</h1>
+            
+            <div class="buttons">
+                <button class="btn" id="yesBtn" onclick="sheSaidYes()">Yes</button>
+                <button class="btn" id="noBtn" onclick="sheSaidNo()">No</button>
+            </div>
+        </div>
+
+        <div id="successMessage">
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3JjeDNpY3d0b2VhNDR1cHB2bDJ4enQyNmNqNDhhenBjdTJzYWYweSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/QvBoMEcQ7DQXK/giphy.gif" alt="Celebration">
+            </div>
+            <h1>YAYYY! See you on the 14th! ❤️</h1>
+            <p>I knew you'd make the right choice 😉</p>
+        </div>
+    </div>
+
+    <script>
+        let noClickCount = 0;
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const mainImage = document.getElementById('mainImage');
+        const questionText = document.querySelector('h1');
+
+        // Funny messages that appear when she clicks No
+        const phrases = [
+            "No", 
+            "Are you sure?", 
+            "Really sure?", 
+            "Think again!", 
+            "Last chance!", 
+            "Surely not?", 
+            "You might regret this!", 
+            "Give it another thought!", 
+            "Are you absolutely certain?", 
+            "This could be a mistake!", 
+            "Have a heart!", 
+            "Don't be so cold!", 
+            "Change of heart?", 
+            "Wouldn't you reconsider?", 
+            "Is that your final answer?", 
+            "You're breaking my heart ;(", 
+            "I am going to cry...",
+            "Shedding tears rn",
+            "Please? 🥺",
+            "Okay now you're just being mean"
+        ];
+
+        function sheSaidNo() {
+            noClickCount++;
+            
+            // 1. Change text on the No button
+            // If we run out of phrases, just keep using the last one
+            if (noClickCount < phrases.length) {
+                noBtn.innerHTML = phrases[noClickCount];
+            } else {
+                noBtn.innerHTML = "JUST CLICK YES ALREADY";
+            }
+
+            // 2. Make the Yes button GIANT
+            // We increase font size and padding every click
+            const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            const currentPadding = parseFloat(window.getComputedStyle(yesBtn).padding);
+            
+            yesBtn.style.fontSize = `${currentSize * 1.4}px`;
+            yesBtn.style.padding = `${currentPadding * 1.2}px`;
+
+            // 3. (Optional) Change the image to something sadder
+            if (noClickCount === 3) {
+                mainImage.src = "https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif"; // Crying cat
+            }
+        }
+
+        function sheSaidYes() {
+            // Hide the question, show the success message
+            document.getElementById('questionScreen').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Add confetti effect (optional styling)
+            document.body.style.backgroundColor = "#ffc1e3";
+        }
+    </script>
+</body>
+</html>
