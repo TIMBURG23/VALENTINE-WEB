@@ -20,19 +20,19 @@
         .container {
             text-align: center;
             position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.8);
+            z-index: 100; /* Keep main card above the floating buttons */
+            background: rgba(255, 255, 255, 0.9);
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             max-width: 90%;
+            transition: all 0.3s ease;
         }
 
         h1 {
             color: #d32f2f;
             font-size: 2rem;
             margin-bottom: 20px;
-            transition: transform 0.2s;
         }
 
         img {
@@ -47,7 +47,7 @@
             justify-content: center;
             gap: 20px;
             margin-top: 20px;
-            position: relative; /* Important for the running button */
+            position: relative;
             min-height: 60px;
         }
 
@@ -58,47 +58,69 @@
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.2s;
         }
 
         #yesBtn {
             background-color: #ff4081;
             color: white;
             z-index: 20;
-        }
-
-        #yesBtn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255, 64, 129, 0.6);
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
         }
 
         #noBtn {
             background-color: #e0e0e0;
             color: #333;
-            position: absolute; /* Allows it to run freely */
+            position: absolute; 
         }
 
-        /* Floating particles */
-        .floater {
+        /* The floating YES buttons */
+        .extra-yes {
             position: absolute;
-            font-size: 2rem;
-            animation: floatUp 4s linear forwards;
-            opacity: 0;
-            pointer-events: none;
+            background-color: #ff4081;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 50;
+            animation: popIn 0.3s ease-out;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Screen Shake Animation */
+        .shake {
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        /* Glitch Text Effect */
+        .glitch {
+            color: red;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 800;
         }
 
         #success { display: none; }
-        
-        /* Mobile adjustment so button doesn't fly off screen */
-        @media (max-width: 600px) {
-            .container { padding: 20px; }
-            img { width: 100%; }
-        }
     </style>
 </head>
 <body>
@@ -109,7 +131,7 @@
         
         <div class="btn-container">
             <button class="btn" id="yesBtn" onclick="acceptLove()">YES!</button>
-            <button class="btn" id="noBtn" onmouseover="runAway()" onclick="runAway()">No</button>
+            <button class="btn" id="noBtn" onmouseover="runAway()" ontouchstart="runAway()" onclick="runAway()">No</button>
         </div>
     </div>
 
@@ -123,83 +145,85 @@
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
         const title = document.getElementById('mainTitle');
+        const container = document.getElementById('question');
         const body = document.body;
         const mainImage = document.getElementById('mainImage');
 
         let attempts = 0;
         
-        // Phrases that cycle through
+        // Fixed syntax errors here
         const phrases = [
             "Are you serious?", "Don't do this!", "Think about the food!", 
             "I'll tell your mum!", "God is watching!", "Have mercy!", 
-            "Don't be wicked!", "Last warning!", "I am crying now 😭😭😭😭😭😭"
-            "I will buy you many sweet!", "Just say YES!!!!", 😭😭😭😭😭😭😭😭😭😭😭😭😭"
+            "Don't be wicked!", "Last warning!", "I am crying now 😭",
+            "I will buy you many sweet!", "Just say YES!!!!", "😭😭😭😭😭😭😭😭"
         ];
 
         function runAway() {
             attempts++;
             
-            // 1. Teleport the button to a random spot
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40);
+            // 1. Move the No button
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
             
-            // Apply Fixed positioning so it breaks out of the container
             noBtn.style.position = 'fixed';
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
 
-            // 2. Change the Text
+            // 2. Change text
             const phraseIndex = Math.min(attempts, phrases.length - 1);
             noBtn.innerText = phrases[phraseIndex];
 
-            // 3. Make the YES button bigger
-            let currentScale = 1 + (attempts * 0.5);
+            // 3. Grow the main Yes button
+            let currentScale = 1 + (attempts * 0.2);
             yesBtn.style.transform = `scale(${currentScale})`;
 
-            // 4. Change Image based on severity
-            if (attempts === 3) {
-                mainImage.src = "https://media.giphy.com/media/26ufcVAp3AiJJsrIs/giphy.gif"; // Crying
-            } else if (attempts === 6) {
-                mainImage.src = "https://media.giphy.com/media/13699jZW4PZdx6/giphy.gif"; // Angry/Shocked
-            }
+            // 4. NEW: Spawn extra "YES" buttons everywhere
+            spawnFloatingYes();
 
-            // 5. Spawn floating guilt text
-            spawnFloater("💔");
-            spawnFloater("😭");
-            
-            // 6. Darken background
-            if (attempts > 5) {
-                body.style.backgroundColor = "#4a0000"; // Evil red
-                title.style.color = "white";
+            // 5. Visual Chaos Levels
+            if (attempts === 3) {
+                mainImage.src = "https://media.giphy.com/media/26ufcVAp3AiJJsrIs/giphy.gif"; 
+            } else if (attempts === 7) {
+                mainImage.src = "https://media.giphy.com/media/13699jZW4PZdx6/giphy.gif";
+                body.style.backgroundColor = "#4a0000";
+                title.classList.add('glitch');
                 title.innerText = "CLICK YES OR I FAINT!!";
+                title.style.color = "white";
+            } else if (attempts > 9) {
+                // Shake the whole screen
+                container.classList.add('shake');
             }
+        }
+
+        function spawnFloatingYes() {
+            const btn = document.createElement('button');
+            btn.classList.add('extra-yes');
+            btn.innerText = "YES 💘";
+            
+            // Random position
+            btn.style.left = Math.random() * 90 + "vw";
+            btn.style.top = Math.random() * 90 + "vh";
+            
+            // Random size
+            const scale = 0.5 + Math.random();
+            btn.style.transform = `scale(${scale})`;
+            
+            // If she clicks ANY of them, it counts as a Yes
+            btn.onclick = acceptLove;
+            
+            body.appendChild(btn);
         }
 
         function acceptLove() {
             document.getElementById('question').style.display = 'none';
+            // Remove all floating buttons
+            document.querySelectorAll('.extra-yes').forEach(el => el.remove());
+            
             document.getElementById('success').style.display = 'block';
             body.style.backgroundColor = "#ffc1e3";
-            
-            // Infinite confetti loop
-            setInterval(() => {
-                spawnFloater("❤️");
-                spawnFloater("🌹");
-                spawnFloater("🥰");
-            }, 300);
-        }
-
-        function spawnFloater(content) {
-            const floater = document.createElement('div');
-            floater.classList.add('floater');
-            floater.innerText = content;
-            floater.style.left = Math.random() * 100 + "vw";
-            floater.style.animationDuration = (Math.random() * 2 + 2) + "s";
-            body.appendChild(floater);
-
-            // Clean up DOM
-            setTimeout(() => {
-                floater.remove();
-            }, 4000);
+            // Remove chaotic styles
+            container.classList.remove('shake');
         }
     </script>
 </body>
